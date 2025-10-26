@@ -38,10 +38,8 @@ header h1 {
 }
 
 .form-group {
-    .form-group {
     margin-bottom: 15px;
-    position: relative;
-    z-index: 10; /* garante que sugestões fiquem por cima */
+    position: relative; /* Para posicionar sugestões */
 }
 
 label {
@@ -144,8 +142,8 @@ footer {
     .form-group {
         margin-bottom: 10px;
     }
+
     table {
         font-size: 0.9em;
     }
 }
-
