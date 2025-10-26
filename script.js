@@ -2,7 +2,18 @@
 const airports = [
     { code: 'GRU', city: 'São Paulo', fullName: 'São Paulo (Guarulhos - GRU)' },
     { code: 'CGH', city: 'São Paulo', fullName: 'São Paulo Congonhas (CGH)' },
-    { code: 'VCP', city: 'São Paulo', fullName: 'São Paulo Viracopos (VCP)' },
+    { code: 'VCP', city: 'Campinas', fullName: 'Campinas (Viracopos - VCP)' },
+    { code: 'GIG', city: 'Rio de Janeiro', fullName: 'Rio de Janeiro (Galeão - GIG)' },
+    { code: 'SDU', city: 'Rio de Janeiro', fullName: 'Rio de Janeiro (Santos Dumont - SDU)' },
+    { code: 'CNF', city: 'Belo Horizonte', fullName: 'Belo Horizonte (Confins - CNF)' },
+    { code: 'BSB', city: 'Brasília', fullName: 'Brasília (BSB)' },
+    { code: 'SSA', city: 'Salvador', fullName: 'Salvador (SSA)' },
+    { code: 'REC', city: 'Recife', fullName: 'Recife (REC)' },
+    { code: 'FOR', city: 'Fortaleza', fullName: 'Fortaleza (FOR)' },
+    { code: 'POA', city: 'Porto Alegre', fullName: 'Porto Alegre (POA)' },
+    { code: 'FLN', city: 'Florianópolis', fullName: 'Florianópolis (FLN)' },
+    { code: 'JPA', city: 'João Pessoa', fullName: 'João Pessoa (JPA)' },
+    { code: 'MCZ', city: 'Maceió', fullName: 'Maceió (MCZ)' },
     { code: 'JFK', city: 'Nova York', fullName: 'Nova York (John F. Kennedy - JFK)' },
     { code: 'LAX', city: 'Los Angeles', fullName: 'Los Angeles (LAX)' },
     { code: 'MIA', city: 'Miami', fullName: 'Miami (MIA)' },
@@ -29,24 +40,23 @@ const airports = [
     { code: 'BOM', city: 'Mumbai', fullName: 'Mumbai (Chhatrapati Shivaji - BOM)' },
     { code: 'JNB', city: 'Joanesburgo', fullName: 'Joanesburgo (O.R. Tambo - JNB)' },
     { code: 'CAI', city: 'Cairo', fullName: 'Cairo (CAI)' },
-    { code: 'ADD', city: 'Addis Ababa', fullName: 'Addis Ababa (Bole - ADD)' },
-    // Adicione mais aeroportos conforme necessário
+    { code: 'ADD', city: 'Addis Ababa', fullName: 'Addis Ababa (Bole - ADD)' }
 ];
 
-// Dados mockados para simulação (voos fictícios para os próximos 6 meses)
+// Dados mockados para simulação (voos fictícios)
 const mockFlights = [];
 
-// Função para gerar dados mockados
+// Gerar dados mockados para os próximos 6 meses
 function generateMockData() {
     const airlines = ['LATAM', 'Gol', 'Azul', 'American Airlines', 'Delta'];
     const today = new Date();
-    for (let i = 0; i < 50; i++) {  // 50 voos simulados
+    for (let i = 0; i < 50; i++) {
         const departureDate = new Date(today);
-        departureDate.setDate(today.getDate() + Math.floor(Math.random() * 180));  // Próximos 6 meses
-        const price = Math.floor(Math.random() * 2000) + 500;  // Preços entre 500 e 2500
+        departureDate.setDate(today.getDate() + Math.floor(Math.random() * 180));
+        const price = Math.floor(Math.random() * 2000) + 500;
         mockFlights.push({
-            departure: 'GRU',  // Exemplo fixo; em produção, use input
-            destination: 'JFK',  // Exemplo fixo
+            departure: 'GRU',
+            destination: 'JFK',
             date: departureDate.toISOString().split('T')[0],
             airline: airlines[Math.floor(Math.random() * airlines.length)],
             price: price
@@ -54,7 +64,6 @@ function generateMockData() {
     }
 }
 
-// Chama a geração de dados ao carregar
 generateMockData();
 
 // Função para mostrar sugestões de aeroportos
@@ -86,12 +95,12 @@ function showSuggestions(input, suggestionsDiv) {
     }
 }
 
-// Função para ocultar sugestões ao clicar fora
+// Ocultar sugestões ao clicar fora
 function hideSuggestions() {
     document.querySelectorAll('.suggestions').forEach(div => div.style.display = 'none');
 }
 
-// Adicionar event listeners para sugestões
+// Event listeners para input de aeroportos
 document.getElementById('departure').addEventListener('input', function() {
     showSuggestions(this, document.getElementById('departure-suggestions'));
 });
@@ -99,14 +108,13 @@ document.getElementById('destination').addEventListener('input', function() {
     showSuggestions(this, document.getElementById('destination-suggestions'));
 });
 
-// Ocultar sugestões ao clicar fora
 document.addEventListener('click', function(e) {
     if (!e.target.closest('.form-group')) {
         hideSuggestions();
     }
 });
 
-// Função para buscar e filtrar voos
+// Buscar voos simulados
 function searchFlights(departure, destination, depDate, retDate, airline) {
     let results = mockFlights.filter(flight => {
         return (!departure || flight.departure.toLowerCase().includes(departure.toLowerCase())) &&
@@ -115,12 +123,11 @@ function searchFlights(departure, destination, depDate, retDate, airline) {
                (!retDate || flight.date <= retDate) &&
                (!airline || flight.airline === airline);
     });
-    // Ordena por preço (melhores preços primeiro)
     results.sort((a, b) => a.price - b.price);
     return results;
 }
 
-// Função para exibir resultados
+// Exibir resultados
 function displayResults(results) {
     const container = document.getElementById('results-container');
     if (results.length === 0) {
