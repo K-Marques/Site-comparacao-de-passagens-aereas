@@ -16,8 +16,10 @@ const airports = [
     { code: 'NRT', city: 'Tóquio', fullName: 'Tóquio (NRT)' },
     { code: 'HND', city: 'Tóquio', fullName: 'Tóquio (HND)' },
     { code: 'ICN', city: 'Seul', fullName: 'Seul (ICN)' },
-    // ...adicione mais conforme precisar
 ];
+
+// Empresas aéreas mockadas
+const airlines = ['LATAM', 'Gol', 'Azul', 'American Airlines', 'Delta'];
 
 // Sugestões de aeroportos
 function showSuggestions(input, suggestionsDiv) {
@@ -59,56 +61,54 @@ document.getElementById('destination').addEventListener('input', function() {
     showSuggestions(this, document.getElementById('destination-suggestions'));
 });
 
-// Busca na Fly Scraper API
-async function searchFlightsAPI(origin, destination, depDate, retDate, adults = 1) {
-    const url = 'https://fly-scraper.p.rapidapi.com/flights/search-detail';
-    const data = {
-        itineraryId: "",
-        sessionId: "session-" + Date.now(),
-        market: "US",
-        locale: "en-US",
-        currency: "USD",
-        adults: adults,
-        cabinClass: "economy",
-        flights: [{ originIata: origin, destinationIata: destination, departDate: depDate }]
-    };
+// Gerar voos simulados
+function generateMockFlights(origin, destination, depDate, retDate) {
+    const results = [];
+    const depPrice = Math.floor(Math.random() * 2000) + 500;
+    const retPrice = Math.floor(Math.random() * 2000) + 500;
+    const depAirline = airlines[Math.floor(Math.random() * airlines.length)];
+    const retAirline = airlines[Math.floor(Math.random() * airlines.length)];
+
+    // Ida
+    results.push({
+        date: depDate,
+        airline: depAirline,
+        price: depPrice,
+        origin: origin,
+        destination: destination
+    });
+
+    // Volta (se houver)
     if (retDate) {
-        data.flights.push({ originIata: destination, destinationIata: origin, departDate: retDate });
+        results.push({
+            date: retDate,
+            airline: retAirline,
+            price: retPrice,
+            origin: destination,
+            destination: origin
+        });
     }
 
-    try {
-        const res = await fetch(url, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'x-rapidapi-host': 'fly-scraper.p.rapidapi.com',
-                'x-rapidapi-key': '65909d936dmsh6fa8626252d7106p129580jsn5027b0b29f67'
-            },
-            body: JSON.stringify(data)
-        });
-        const result = await res.json();
-        displayResultsAPI(result);
-    } catch (err) {
-        console.error(err);
-        alert('Erro ao buscar voos.');
-    }
+    // Ordena por preço
+    results.sort((a, b) => a.price - b.price);
+    return results;
 }
 
 // Exibir resultados
-function displayResultsAPI(apiData) {
+function displayResults(results) {
     const container = document.getElementById('results-container');
-    if (!apiData || !apiData.itineraries || apiData.itineraries.length === 0) {
+    if (results.length === 0) {
         container.innerHTML = '<p>Nenhum voo encontrado.</p>';
         return;
     }
 
-    let html = '<table><thead><tr><th>Data</th><th>Empresa</th><th>Preço (USD)</th></tr></thead><tbody>';
-    apiData.itineraries.forEach(it => {
-        const flight = it.flights[0];
+    let html = '<table><thead><tr><th>Data</th><th>Origem → Destino</th><th>Empresa</th><th>Preço (R$)</th></tr></thead><tbody>';
+    results.forEach(flight => {
         html += `<tr>
-            <td>${flight.departDate}</td>
-            <td>${flight.airlineName}</td>
-            <td>$${it.price.totalAmount}</td>
+            <td>${flight.date}</td>
+            <td>${flight.origin} → ${flight.destination}</td>
+            <td>${flight.airline}</td>
+            <td>R$ ${flight.price}</td>
         </tr>`;
     });
     html += '</tbody></table>';
@@ -128,5 +128,6 @@ document.getElementById('flight-search').addEventListener('submit', e => {
         return;
     }
 
-    searchFlightsAPI(departure, destination, depDate, retDate);
+    const results = generateMockFlights(departure, destination, depDate, retDate);
+    displayResults(results);
 });
