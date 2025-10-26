@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Comparador de Passagens Aéreas</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <header>
+      <h1>Comparador de Passagens Aéreas</h1>
+      <p>Encontre os melhores preços para os próximos 6 meses</p>
+    </header>
+
+    <main>
+      <section id="search-form">
+        <form id="flight-search">
+          <div class="form-group">
+            <label for="departure">Aeroporto de Partida:</label>
+            <input
+              type="text"
+              id="departure"
+              placeholder="Ex: GRU (São Paulo)"
+              required
+            />
+          </div>
+          <div class="form-group">
+            <label for="destination">Destino:</label>
+            <input
+              type="text"
+              id="destination"
+              placeholder="Ex: JFK (Nova York)"
+              required
+            />
+          </div>
+          <div class="form-group">
+            <label for="departure-date">Data de Ida:</label>
+            <input type="date" id="departure-date" required />
+          </div>
+          <div class="form-group">
+            <label for="return-date">Data de Volta (opcional):</label>
+            <input type="date" id="return-date" />
+          </div>
+          <div class="form-group">
+            <label for="airline">Empresa Aérea (opcional):</label>
+            <select id="airline">
+              <option value="">Todas</option>
+              <option value="LATAM">LATAM</option>
+              <option value="Gol">Gol</option>
+              <option value="Azul">Azul</option>
+              <option value="American Airlines">American Airlines</option>
+              <option value="Delta">Delta</option>
+            </select>
+          </div>
+          <button type="submit" id="search-btn">Buscar Passagens</button>
+        </form>
+      </section>
+
+      <section id="results">
+        <h2>Resultados da Busca</h2>
+        <div id="results-container">
+          <p>Use o formulário acima para buscar voos.</p>
+        </div>
+      </section>
+    </main>
+
+    <footer>
+      <p>
+        &copy; 2023 Comparador de Passagens. Dados simulados para demonstração.
+      </p>
+    </footer>
+
+    <script src="script.js"></script>
+  </body>
+</html>
