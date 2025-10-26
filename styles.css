@@ -39,7 +39,7 @@ header h1 {
 
 .form-group {
     margin-bottom: 15px;
-    position: relative; /* Para posicionar sugestões */
+    position: relative; /* Para posicionar as sugestões */
 }
 
 label {
@@ -142,7 +142,6 @@ footer {
     .form-group {
         margin-bottom: 10px;
     }
-
     table {
         font-size: 0.9em;
     }
